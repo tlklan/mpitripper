@@ -1,0 +1,35 @@
+#!/usr/bin/php
+<?php
+
+// initialize CURL with proper options
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, "https://mp-it.fi/jm/index.php");
+curl_setopt($ch, CURLOPT_HEADER, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POST, true);
+
+$postData = array(
+	'cmd' => 'login',
+	'password' => '',
+	'username' => '',
+);
+
+// retrieve the page
+curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+$output = curl_exec($ch);
+$info = curl_getinfo($ch);
+curl_close($ch);
+
+// parse out the HTTP headers
+$raw_headers = explode("\n", substr($output, 0, $info['header_size']));
+$headers = array();
+
+foreach ($raw_headers as $header)
+	if (preg_match('/^(.*?)\\:\\s+(.*?)$/m', $header, $header_parts))
+		$headers[$header_parts[1]] = $header_parts[2];
+
+// parse the actual PHPSESSID from the cookie data and print it
+$rawSessid = $headers['Set-Cookie']; 
+$phpSessid = substr($rawSessid, 10, 32);
+
+echo $phpSessid;
