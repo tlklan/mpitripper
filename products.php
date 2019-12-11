@@ -7,6 +7,9 @@ $user = new LocalUserController(true);
 if(!$user->isLoggedIn())
 	$user->setForbidden();
 
+// hack the Content-Type
+header('Content-Type: text/html; charset=ISO-8859-1');
+
 // determine the parameters used
 if (isset($_GET['g1'])) {
 	$name = 'g1';
