@@ -24,8 +24,9 @@ touch "jm/index.php?cmd=logout&"
 # and it's not needed anymore with wget 1.13
 #
 # Edit 2018-08-28: domain changed
+# Edit 2019-12-12: --no-check-certificate added
 #
-wget -nH -nc -nv -r -np --cookies=off --reject '*logout*' --header="Cookie: PHPSESSID=$PHPSESSID" https://mp-it.fi/jm/shop.php
+wget -nH -nc -nv -r -np --no-check-certificate --cookies=off --reject '*logout*' --header="Cookie: PHPSESSID=$PHPSESSID" https://mp-it.fi/jm/shop.php
 
 echo "Applying various workarounds"
 
